@@ -59,7 +59,7 @@ import numpy as np
 np.unique(km.labels_,return_counts=True)
 
 text={}
-for i , cluster in km.labels_:
+for i , cluster in enumerate(km.labels_):
     oneDocument=doxyDonkeyPosts[i]
     if cluster not in text.keys():
         text[cluster]=oneDocument
