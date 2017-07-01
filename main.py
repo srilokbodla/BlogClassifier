@@ -41,3 +41,27 @@ doxyDonkeyPosts = []
 for link in links:
     doxyDonkeyPosts += getDoxyDonkeyText(link)
 print doxyDonkeyPosts
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+vector = TfidfVectorizer(max_df=0.5,min_df=2,stop_words='english')
+x=vector.fit_transform(doxyDonkeyPosts)
+
+print x
+
+from sklearn.cluster import KMeans
+
+km=KMeans(n_clusters=3 , init='k-means++' , max_iter=100 , n_init=1 , verbose=True)
+
+km.fit(x)
+
+import numpy as np
+np.unique(km.labels_,return_counts=True)
+
+text={}
+for i , cluster in km.labels_:
+    oneDocument=doxyDonkeyPosts[i]
+    if cluster not in text.keys():
+        text[cluster]=oneDocument
+    else:
+        text[cluster]+=oneDocument
